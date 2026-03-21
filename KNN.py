@@ -1,10 +1,11 @@
-__authors__ = ['', '', '']
-__group__ = ''
+__authors__ = ['Hugo Aguilar', 'Aida Peix', '']
+__group__ = '73'
 
 import numpy as np
 import math
 import operator
-
+import scipy.spatial.distance as distance
+from scipy.spatial.distance import cdist
 
 class KNN:
 
@@ -46,11 +47,11 @@ class KNN:
         test_data = test_data.reshape(num_test, -1)
 
         # Esto es equivalente a cdist(test_data, self.train_data) en scipy.spatial.distance
-        test_sq = np.sum(test_data**2, axis=1).reshape(-1, 1)
-        train_sq = np.sum(self.train_data**2, axis=1).reshape(1, -1)
-        cross = np.dot(test_data, self.train_data.T)
+        # test_sq = np.sum(test_data**2, axis=1).reshape(-1, 1)
+        # train_sq = np.sum(self.train_data**2, axis=1).reshape(1, -1)
+        # cross = np.dot(test_data, self.train_data.T)
 
-        dist_matrix = np.sqrt(test_sq + train_sq - 2*cross)
+        dist_matrix = cdist(test_data, self.train_data, 'euclidean')
 
         # Obtenemos los índices de los k vecinos más cercanos para cada punto de prueba
         nearest_idx = np.argsort(dist_matrix, axis=1)[:, :k]
@@ -76,7 +77,7 @@ class KNN:
             for label in neighbor_row:
                 votes[label] = votes.get(label, 0) + 1
 
-            predicted = max(votes.items(), key=lambda x: x[1])[0]
+            predicted = max(votes, key=votes.get)
 
             classes_predict.append(predicted)
 
