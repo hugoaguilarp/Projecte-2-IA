@@ -20,7 +20,7 @@ class KMeans:
         self._init_options(options)
 
     #############################################################
-    ##  THIS FUNCTION CAN BE MODIFIED FROM THIS POINT, if needed
+    # THIS FUNCTION CAN BE MODIFIED FROM THIS POINT, if needed
     #############################################################
 
     def _init_X(self, X):
@@ -174,7 +174,8 @@ class KMeans:
             cluster_points = self.X[self.labels == cluster_id]
 
             if cluster_points.size > 0:
-                dist = np.sum((cluster_points - self.centroids[cluster_id])**2, axis=1)
+                dist = np.sum(
+                    (cluster_points - self.centroids[cluster_id])**2, axis=1)
                 total_distance += np.sum(dist)
 
         return total_distance / N
@@ -204,7 +205,31 @@ class KMeans:
 
     #############################################################
 
-    def find_bestK(self, max_K, option):
+    def find_bestK(self, max_K):
+        """
+        sets the best k analysing the results up to 'max_K' clusters
+        """
+
+        threshold = 20
+        best_k = max_K
+
+        scores = []
+
+        for k in range(1, max_K + 1):
+            self.K = k
+            self.fit()
+            scores.append(self.withinClassDistance())
+
+        for k in range(1, len(scores)):
+            decrease = 100 * (scores[k] / scores[k - 1])
+            if (100 - decrease) < threshold:
+                best_k = k
+                break
+
+        self.K = best_k
+        self.fit()
+
+    def find_bestK_old(self, max_K, option="w"):
         """
          sets the best k analysing the results up to 'max_K' clusters
         """
