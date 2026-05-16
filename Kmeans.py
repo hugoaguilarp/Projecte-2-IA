@@ -229,7 +229,7 @@ class KMeans:
         self.K = best_k
         self.fit()
 
-    def find_bestK_old(self, max_K, option="w"):
+    def find_bestK_other(self, max_K, option="w"):
         """
          sets the best k analysing the results up to 'max_K' clusters
         """
