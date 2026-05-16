@@ -1,5 +1,5 @@
-__authors__ = ['', '', '']
-__group__ = ''
+__authors__ = ['Hugo Aguilar', 'Aida Peix', '']
+__group__ = '73'
 
 import numpy as np
 import utils
